@@ -211,7 +211,7 @@ export default function Home() {
           </div>
 
           <h1
-            className="animate-fade-up text-5xl sm:text-6xl md:text-7xl font-semibold leading-[1.06] tracking-[-0.03em] text-white"
+            className="animate-fade-up text-5xl sm:text-6xl md:text-7xl font-semibold leading-[1.18] tracking-[-0.03em] text-white"
             style={{ animationDelay: "140ms" }}
           >
             AI-Powered Security
