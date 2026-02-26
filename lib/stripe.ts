@@ -1,0 +1,16 @@
+import Stripe from 'stripe'
+
+if (!process.env.STRIPE_SECRET_KEY) {
+  throw new Error('Missing STRIPE_SECRET_KEY environment variable')
+}
+
+export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
+  apiVersion: '2026-02-25.clover',
+  typescript: true,
+})
+
+export const PRICE_IDS: Record<string, string> = {
+  pro:      process.env.STRIPE_PRICE_PRO      ?? '',
+  business: process.env.STRIPE_PRICE_BUSINESS ?? '',
+  agency:   process.env.STRIPE_PRICE_AGENCY   ?? '',
+}

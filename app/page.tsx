@@ -192,7 +192,13 @@ export default function Home() {
         <div className="flex items-center gap-4">
           <StatusDot />
           <a
-            href="#start"
+            href="/auth/login"
+            className="text-xs text-zinc-400 hover:text-zinc-200 transition-colors duration-200"
+          >
+            Sign in
+          </a>
+          <a
+            href="/auth/signup"
             className="text-xs font-medium px-4 py-2 rounded-full bg-indigo-600 hover:bg-indigo-500 text-white transition-colors duration-200"
           >
             Start Monitoring
@@ -233,7 +239,7 @@ export default function Home() {
             style={{ animationDelay: "300ms" }}
           >
             <a
-              href="#start"
+              href="/auth/signup"
               className="inline-flex items-center h-11 px-7 rounded-full bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-medium transition-colors duration-200"
             >
               Start Secure Monitoring
@@ -242,7 +248,7 @@ export default function Home() {
               href="#how-it-works"
               className="inline-flex items-center h-11 px-7 rounded-full border border-white/10 text-sm font-medium text-zinc-300 hover:border-white/20 hover:text-white transition-all duration-200"
             >
-              Book a Security Review
+              How It Works
             </a>
           </div>
 
@@ -494,16 +500,16 @@ export default function Home() {
           </p>
           <div className="flex flex-col sm:flex-row items-center gap-3">
             <a
-              href="mailto:hello@floatt.io"
+              href="/auth/signup"
               className="inline-flex items-center h-12 px-8 rounded-full bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-medium transition-colors duration-200"
             >
-              Start Secure Monitoring
+              Start Secure Monitoring — Free
             </a>
             <a
-              href="mailto:hello@floatt.io"
+              href="/auth/login"
               className="inline-flex items-center h-12 px-8 rounded-full border border-white/10 text-sm font-medium text-zinc-300 hover:border-white/20 hover:text-white transition-all duration-200"
             >
-              Book a Security Review
+              Sign In
             </a>
           </div>
           <p className="text-[11px] font-mono text-zinc-700 tracking-widest">
