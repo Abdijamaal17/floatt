@@ -30,6 +30,15 @@ export function SignupForm() {
 
     setLoading(true)
 
+    // Diagnose missing env vars baked into the bundle
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+    const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+    if (!supabaseUrl || !supabaseKey) {
+      setError(`Configuration error: Supabase env vars missing from bundle. URL=${supabaseUrl ?? 'undefined'}, KEY=${supabaseKey ? '[set]' : 'undefined'}`)
+      setLoading(false)
+      return
+    }
+
     const supabase = createClient()
 
     const timeout = new Promise<never>((_, reject) =>
