@@ -31,7 +31,7 @@ export function SignupForm() {
     setLoading(true)
 
     const supabase = createClient()
-    const { error } = await supabase.auth.signUp({
+    const { data, error } = await supabase.auth.signUp({
       email,
       password,
       options: {
@@ -40,9 +40,18 @@ export function SignupForm() {
     })
 
     if (error) {
-      setError(error.message)
+      // Show full error details including code for diagnosis
+      const detail = [error.message, error.code ? `(code: ${error.code})` : '']
+        .filter(Boolean).join(' ')
+      setError(detail)
       setLoading(false)
       return
+    }
+
+    // Supabase returns no error but empty identities when the email is already registered.
+    // We still show "check your email" to avoid user enumeration, but log it.
+    if (data.user && data.user.identities?.length === 0) {
+      console.warn('[signup] email already registered:', email)
     }
 
     setSuccess(true)
@@ -63,9 +72,13 @@ export function SignupForm() {
               </svg>
             </div>
             <h2 className="text-lg font-semibold text-white mb-2">Check your email</h2>
-            <p className="text-sm text-zinc-500">
+            <p className="text-sm text-zinc-500 mb-3">
               We sent a confirmation link to <strong className="text-zinc-300">{email}</strong>.
               Click it to activate your account.
+            </p>
+            <p className="text-xs text-zinc-700">
+              Can&apos;t find it? Check your spam / junk folder.
+              The email comes from <span className="text-zinc-500">noreply@mail.app.supabase.io</span>.
             </p>
           </div>
         </div>
