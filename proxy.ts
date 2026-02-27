@@ -11,6 +11,12 @@ import type { NextRequest } from 'next/server'
  *    sent to /dashboard when they visit /auth/* pages
  */
 export async function proxy(request: NextRequest) {
+  // If Supabase env vars are not configured, pass through all requests.
+  // This prevents the middleware from crashing before env vars are set in Vercel.
+  if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
+    return NextResponse.next({ request })
+  }
+
   let supabaseResponse = NextResponse.next({ request })
 
   const supabase = createServerClient(
