@@ -31,25 +31,40 @@ export function SignupForm() {
     setLoading(true)
 
     const supabase = createClient()
-    const { data, error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        emailRedirectTo: `${window.location.origin}/auth/callback`,
-      },
-    })
 
-    if (error) {
-      // Show full error details including code for diagnosis
-      const detail = [error.message, error.code ? `(code: ${error.code})` : '']
+    const timeout = new Promise<never>((_, reject) =>
+      setTimeout(() => reject(new Error('Request timed out after 10 seconds. Check that your Supabase project is active (free tier projects pause after inactivity).')), 10000)
+    )
+
+    let data: Awaited<ReturnType<typeof supabase.auth.signUp>>['data']
+    let authError: Awaited<ReturnType<typeof supabase.auth.signUp>>['error']
+
+    try {
+      const result = await Promise.race([
+        supabase.auth.signUp({
+          email,
+          password,
+          options: { emailRedirectTo: `${window.location.origin}/auth/callback` },
+        }),
+        timeout,
+      ])
+      data = result.data
+      authError = result.error
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Unknown error occurred.')
+      setLoading(false)
+      return
+    }
+
+    if (authError) {
+      const detail = [authError.message, authError.code ? `(code: ${authError.code})` : '']
         .filter(Boolean).join(' ')
       setError(detail)
       setLoading(false)
       return
     }
 
-    // Supabase returns no error but empty identities when the email is already registered.
-    // We still show "check your email" to avoid user enumeration, but log it.
+    // Supabase returns no error but empty identities when email already registered.
     if (data.user && data.user.identities?.length === 0) {
       console.warn('[signup] email already registered:', email)
     }
