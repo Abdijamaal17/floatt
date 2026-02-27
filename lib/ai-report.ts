@@ -1,4 +1,4 @@
-import { anthropic } from './anthropic'
+import { getAnthropic } from './anthropic'
 import type { ScanFindings, AIReport } from '@/types'
 
 const SYSTEM_PROMPT = `You are a senior cybersecurity analyst reviewing website security scan results for small and medium businesses. Your job is to translate raw technical findings into clear, actionable guidance that a non-technical business owner can understand and act on.
@@ -47,7 +47,7 @@ Include a finding for every notable issue discovered, including positive finding
  * Model: claude-sonnet-4-6 (Anthropic's latest Sonnet model)
  */
 export async function generateAIReport(findings: ScanFindings): Promise<AIReport> {
-  const message = await anthropic.messages.create({
+  const message = await getAnthropic().messages.create({
     model: 'claude-sonnet-4-6',
     max_tokens: 4096,
     system: SYSTEM_PROMPT,

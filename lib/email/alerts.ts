@@ -1,10 +1,10 @@
-import { resend, FROM_EMAIL } from '@/lib/resend'
+import { getResend, FROM_EMAIL } from '@/lib/resend'
 import type { AIReport, AIReportFinding, DomainRow } from '@/types'
 
 // ─── Domain verified ──────────────────────────────────────────────────────────
 
 export async function sendVerificationEmail(to: string, domain: string) {
-  await resend.emails.send({
+  await getResend().emails.send({
     from: FROM_EMAIL,
     to,
     subject: `✓ Domain verified: ${domain}`,
@@ -43,7 +43,7 @@ export async function sendFindingAlert(
     )
     .join('')
 
-  await resend.emails.send({
+  await getResend().emails.send({
     from: FROM_EMAIL,
     to,
     subject: `⚠ Security alert: ${criticalFindings.length} issue(s) found on ${domain}`,
@@ -86,7 +86,7 @@ export async function sendWeeklyDigest(
     )
     .join('')
 
-  await resend.emails.send({
+  await getResend().emails.send({
     from: FROM_EMAIL,
     to,
     subject: 'Floatt Weekly Security Digest',
